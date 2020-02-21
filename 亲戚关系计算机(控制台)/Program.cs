@@ -72,54 +72,260 @@ namespace 亲戚关系计算机_控制台_
             }
             return p;
         }
-        Person next(Person startPoi,Person nextPoi)
+        Person next(Person startPoi,Person nextPoi)//有问题，未解决
         {
-            Person p = first(startPoi);
-            if (p == null)
+            if (nextPoi == null)
             {
                 return null;
             }
-            else if (startPoi._father == p)
+            else if (startPoi._father == nextPoi)
             {
-                p = startPoi._mother;
+                if (startPoi._mother != null)
+                {
+                    nextPoi = startPoi._mother;
+                }
+                else if (startPoi._son != null)
+                {
+                    nextPoi = startPoi._son;
+                }
+                else if (startPoi._daughter != null)
+                {
+                    nextPoi = startPoi._daughter;
+                }
+                else if (startPoi._elderBrother != null)
+                {
+                    nextPoi = startPoi._elderBrother;
+                }
+                else if (startPoi._elderSister != null)
+                {
+                    nextPoi = startPoi._elderSister;
+                }
+                else if (startPoi._littleBrother != null)
+                {
+                    nextPoi = startPoi._littleBrother;
+                }
+                else if (startPoi._littleSister != null)
+                {
+                    nextPoi = startPoi._littleSister;
+                }
+                else if (startPoi._husband != null)
+                {
+                    nextPoi = startPoi._husband;
+                }
+                else if (startPoi._wife != null)
+                {
+                    nextPoi = startPoi._wife;
+                }
+                else
+                {
+                    nextPoi = null;
+                }
             }
-            else if (startPoi._mother == p)
+            else if (startPoi._mother == nextPoi)
             {
-                p = startPoi._son;
+                if (startPoi._son != null)
+                {
+                    nextPoi = startPoi._son;
+                }
+                else if (startPoi._daughter != null)
+                {
+                    nextPoi = startPoi._daughter;
+                }
+                else if (startPoi._elderBrother != null)
+                {
+                    nextPoi = startPoi._elderBrother;
+                }
+                else if (startPoi._elderSister != null)
+                {
+                    nextPoi = startPoi._elderSister;
+                }
+                else if (startPoi._littleBrother != null)
+                {
+                    nextPoi = startPoi._littleBrother;
+                }
+                else if (startPoi._littleSister != null)
+                {
+                    nextPoi = startPoi._littleSister;
+                }
+                else if (startPoi._husband != null)
+                {
+                    nextPoi = startPoi._husband;
+                }
+                else if (startPoi._wife != null)
+                {
+                    nextPoi = startPoi._wife;
+                }
+                else
+                {
+                    nextPoi = null;
+                }
             }
-            else if (startPoi._son == p)
+            else if (startPoi._son == nextPoi)
             {
-                p = startPoi._daughter;
+                if (startPoi._daughter != null)
+                {
+                    nextPoi = startPoi._daughter;
+                }
+                else if (startPoi._elderBrother != null)
+                {
+                    nextPoi = startPoi._elderBrother;
+                }
+                else if (startPoi._elderSister != null)
+                {
+                    nextPoi = startPoi._elderSister;
+                }
+                else if (startPoi._littleBrother != null)
+                {
+                    nextPoi = startPoi._littleBrother;
+                }
+                else if (startPoi._littleSister != null)
+                {
+                    nextPoi = startPoi._littleSister;
+                }
+                else if (startPoi._husband != null)
+                {
+                    nextPoi = startPoi._husband;
+                }
+                else if (startPoi._wife != null)
+                {
+                    nextPoi = startPoi._wife;
+                }
+                else
+                {
+                    nextPoi = null;
+                }
             }
-            else if (startPoi._daughter == p)
+            else if (startPoi._daughter == nextPoi)
             {
-                p = startPoi._elderBrother;
+                if (startPoi._elderBrother != null)
+                {
+                    nextPoi = startPoi._elderBrother;
+                }
+                else if (startPoi._elderSister != null)
+                {
+                    nextPoi = startPoi._elderSister;
+                }
+                else if (startPoi._littleBrother != null)
+                {
+                    nextPoi = startPoi._littleBrother;
+                }
+                else if (startPoi._littleSister != null)
+                {
+                    nextPoi = startPoi._littleSister;
+                }
+                else if (startPoi._husband != null)
+                {
+                    nextPoi = startPoi._husband;
+                }
+                else if (startPoi._wife != null)
+                {
+                    nextPoi = startPoi._wife;
+                }
+                else
+                {
+                    nextPoi = null;
+                }
             }
-            else if (startPoi._elderBrother == p)
+            else if (startPoi._elderBrother == nextPoi)
             {
-                p = startPoi._elderSister;
+                if (startPoi._elderSister != null)
+                {
+                    nextPoi = startPoi._elderSister;
+                }
+                else if (startPoi._littleBrother != null)
+                {
+                    nextPoi = startPoi._littleBrother;
+                }
+                else if (startPoi._littleSister != null)
+                {
+                    nextPoi = startPoi._littleSister;
+                }
+                else if (startPoi._husband != null)
+                {
+                    nextPoi = startPoi._husband;
+                }
+                else if (startPoi._wife != null)
+                {
+                    nextPoi = startPoi._wife;
+                }
+                else
+                {
+                    nextPoi = null;
+                }
             }
-            else if (startPoi._elderSister == p)
+            else if (startPoi._elderSister == nextPoi)
             {
-                p = startPoi._littleBrother;
+                if (startPoi._littleBrother != null)
+                {
+                    nextPoi = startPoi._littleBrother;
+                }
+                else if (startPoi._littleSister != null)
+                {
+                    nextPoi = startPoi._littleSister;
+                }
+                else if (startPoi._husband != null)
+                {
+                    nextPoi = startPoi._husband;
+                }
+                else if (startPoi._wife != null)
+                {
+                    nextPoi = startPoi._wife;
+                }
+                else
+                {
+                    nextPoi = null;
+                }
             }
-            else if (startPoi._littleBrother == p)
+            else if (startPoi._littleBrother == nextPoi)
             {
-                p = startPoi._littleSister;
+                if (startPoi._littleSister != null)
+                {
+                    nextPoi = startPoi._littleSister;
+                }
+                else if (startPoi._husband != null)
+                {
+                    nextPoi = startPoi._husband;
+                }
+                else if (startPoi._wife != null)
+                {
+                    nextPoi = startPoi._wife;
+                }
+                else
+                {
+                    nextPoi = null;
+                }
             }
-            else if (startPoi._littleSister == p)
+            else if (startPoi._littleSister == nextPoi)
             {
-                p = startPoi._husband;
+                if (startPoi._husband != null)
+                {
+                    nextPoi = startPoi._husband;
+                }
+                else if (startPoi._wife != null)
+                {
+                    nextPoi = startPoi._wife;
+                }
+                else
+                {
+                    nextPoi = null;
+                }
             }
-            else if (startPoi._husband == p)
+            else if (startPoi._husband == nextPoi)
             {
-                p = startPoi._wife;
+                if (startPoi._wife != null)
+                {
+                    nextPoi = startPoi._wife;
+                }
+                else
+                {
+                    nextPoi = null;
+                }
             }
-            else if (startPoi._wife == p)
+            else if (startPoi._wife == nextPoi)
             {
-                p = null;
+                nextPoi = null;
             }
-            return p;
+            return nextPoi;
         }
 
         #region//深度遍历和广度遍历
@@ -1208,6 +1414,7 @@ namespace 亲戚关系计算机_控制台_
             if (howToFind == HowToFind.ByNAME)
             {
                 string name = input;
+
                 //
 
             }

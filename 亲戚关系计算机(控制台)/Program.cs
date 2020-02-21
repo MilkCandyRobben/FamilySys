@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace 亲戚关系计算机_控制台_
 {
-    static class PersonPointer
-    {
-        static Person me_startPoi;
-        static Person prePerson;
-        static Person thisPerson;
-        static Person nextPerson;
-    }
+    //static class PersonPointer
+    //{
+    //    static Person me_startPoi;
+    //    static Person prePerson;
+    //    static Person thisPerson;
+    //    static Person nextPerson;
+    //}
     class FamilyRelationGraph
     {
         Person me_startPoi;
@@ -72,7 +72,7 @@ namespace 亲戚关系计算机_控制台_
             }
             return p;
         }
-        Person next(Person startPoi,Person nextPoi)//有问题，未解决
+        Person next(Person startPoi,Person nextPoi)
         {
             if (nextPoi == null)
             {
@@ -1404,34 +1404,62 @@ namespace 亲戚关系计算机_控制台_
             return true;
         }
         //查找
-        private bool findPerson()
-        {
-            return true;
-
-        }
-        public bool findPerson(HowToFind howToFind, string input)
+        public bool findPerson(HowToFind howToFind, string input, List<Person> findedPersons)
         {
             if (howToFind == HowToFind.ByNAME)
             {
                 string name = input;
+                List<Person> result = new List<Person>();
+                BFS_withoutSetVisited(me_startPoi, result);
+                foreach(var i in result)
+                {
+                    if (i.name == input)
+                    {
 
+                    }
+                }
                 //
-
             }
             else if (howToFind == HowToFind.ByENCODE)
             {
                 string encodeStr = input;
-
-
-                //
+                List<Person> result = new List<Person>();
+                BFS_withoutSetVisited(me_startPoi, result);
+                foreach (var i in result)
+                {
+                    if (i.encodeStr == input)
+                    {
+                        findedPersons.Add(i);
+                    }
+                }
             }
             return true;
-
         }
-        private void showMessage(Person p)
+        private void showOnePersonMessage(Person p)
         {
-            return true;
-
+            Console.WriteLine(p.name);
+            Console.WriteLine(p.sex);
+            Console.WriteLine(p.age);
+            Console.WriteLine(p.birthday);
+            if (p.isDead == true) 
+            {
+                Console.WriteLine(p.deathday);
+            }
+            //Console.WriteLine(p.isDead);
+            Console.WriteLine(p.bornPlace);
+            Console.WriteLine(p.eduBackground);
+            Console.WriteLine(p.job);
+            Console.WriteLine(p.jobPosition);
+            Console.WriteLine(p.level);
+            Console.WriteLine(p.encodeStr);
+            //Console.WriteLine(p.isVisited);
+        }
+        private void showAllPersonMessage(List<Person> persons)
+        {
+            foreach(var i in persons)
+            {
+                showOnePersonMessage(i);
+            }
         }
         //删除
         private bool delPerson()
@@ -1449,15 +1477,15 @@ namespace 亲戚关系计算机_控制台_
             }
             return true;
         }
-        public bool delPerson(string name)
-        {
-            if (memberCount > 0)
-            {
-                memberCount--;
-            }
-            return true;
+        //public bool delPerson(string name)
+        //{
+        //    if (memberCount > 0)
+        //    {
+        //        memberCount--;
+        //    }
+        //    return true;
 
-        }
+        //}
         //修改
         private bool altPerson()
         {
@@ -1470,11 +1498,11 @@ namespace 亲戚关系计算机_控制台_
 
         }
 
-        public bool altPerson(string name)
-        {
-            return true;
+        //public bool altPerson(string name)
+        //{
+        //    return true;
 
-        }
+        //}
 
     }
 
@@ -1907,7 +1935,9 @@ namespace 亲戚关系计算机_控制台_
     {
         static void Main(string[] args)
         {
-            
+            string a = "";
+            string b;
+            Console.WriteLine(a == b);
 
         }
     }

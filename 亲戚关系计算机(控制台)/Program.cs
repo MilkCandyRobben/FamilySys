@@ -19,6 +19,8 @@ namespace 亲戚关系计算机_控制台_
         Person curr;
         int memberCount;
         public enum HowToFind { ByNAME,ByENCODE};
+        public enum HowToDel { ByNAME, ByENCODE };
+        public enum HowToAlt { ByNAME, ByENCODE };
 
         private FamilyRelationGraph()
         {
@@ -1409,23 +1411,22 @@ namespace 亲戚关系计算机_控制台_
             if (howToFind == HowToFind.ByNAME)
             {
                 string name = input;
-                List<Person> result = new List<Person>();
-                BFS_withoutSetVisited(me_startPoi, result);
-                foreach(var i in result)
+                List<Person> BFSresult = new List<Person>();
+                BFS_withoutSetVisited(me_startPoi, BFSresult);
+                foreach(var i in BFSresult)
                 {
                     if (i.name == input)
                     {
-
+                        findedPersons.Add(i);
                     }
                 }
-                //
             }
             else if (howToFind == HowToFind.ByENCODE)
             {
                 string encodeStr = input;
-                List<Person> result = new List<Person>();
-                BFS_withoutSetVisited(me_startPoi, result);
-                foreach (var i in result)
+                List<Person> BFSresult = new List<Person>();
+                BFS_withoutSetVisited(me_startPoi, BFSresult);
+                foreach (var i in BFSresult)
                 {
                     if (i.encodeStr == input)
                     {
@@ -1441,17 +1442,35 @@ namespace 亲戚关系计算机_控制台_
             Console.WriteLine(p.sex);
             Console.WriteLine(p.age);
             Console.WriteLine(p.birthday);
-            if (p.isDead == true) 
+            if (p.isDead == true)
             {
                 Console.WriteLine(p.deathday);
             }
             //Console.WriteLine(p.isDead);
-            Console.WriteLine(p.bornPlace);
-            Console.WriteLine(p.eduBackground);
-            Console.WriteLine(p.job);
-            Console.WriteLine(p.jobPosition);
-            Console.WriteLine(p.level);
-            Console.WriteLine(p.encodeStr);
+            if (p.bornPlace != null)
+            {
+                Console.WriteLine(p.bornPlace);
+            }
+            if (p.eduBackground != null)
+            {
+                Console.WriteLine(p.eduBackground);
+            }
+            if (p.job != null)
+            {
+                Console.WriteLine(p.job);
+            }
+            if (p.jobPosition != null)
+            {
+                Console.WriteLine(p.jobPosition);
+            }
+            if (p.level != null)
+            {
+                Console.WriteLine(p.level);
+            }
+            if (p.encodeStr != null)
+            {
+                Console.WriteLine(p.encodeStr);
+            }
             //Console.WriteLine(p.isVisited);
         }
         private void showAllPersonMessage(List<Person> persons)
@@ -1468,24 +1487,32 @@ namespace 亲戚关系计算机_控制台_
             return true;
 
         }
-        public bool delPerson(string encodeStr)
+        public bool delPerson(HowToFind howTodel,string input)
         {
+            if (howTodel == HowToFind.ByNAME)
+            {
+                List<Person> findedPersons = new List<Person>();
+                findPerson(HowToFind.ByNAME, input, findedPersons);
+                foreach(var i in findedPersons)
+                {
+                    Person p = setCurrToEncodeStrPosGoingToAdd(i.encodeStr);
+                    Person q = setCurrToEncodeStrPos(i.encodeStr);
+                    //
+                }
+            }
+            else if (howTodel == HowToFind.ByNAME)
+            {
+
+            }
             if (memberCount > 0)
             {
                 memberCount--;
 
             }
+
             return true;
         }
-        //public bool delPerson(string name)
-        //{
-        //    if (memberCount > 0)
-        //    {
-        //        memberCount--;
-        //    }
-        //    return true;
 
-        //}
         //修改
         private bool altPerson()
         {
@@ -1498,11 +1525,11 @@ namespace 亲戚关系计算机_控制台_
 
         }
 
-        //public bool altPerson(string name)
-        //{
-        //    return true;
+        public bool altPerson(string name)
+        {
+            return true;
 
-        //}
+        }
 
     }
 
@@ -1897,6 +1924,240 @@ namespace 亲戚关系计算机_控制台_
                 }
                 return true;
             }
+            else if (elder.birthday != null && younger.birthday != null)
+            {
+                if ((elder.birthday).CompareTo(younger.birthday) <= 0)
+                {
+                    if (elder.sex == "male")
+                    {
+                        elder.setToBeElderBrotherOf(younger);
+                    }
+                    else if (elder.sex == "female")
+                    {
+                        elder.setToBeElderSisterOf(younger);
+                    }
+                    return true;
+                }
+                else if ((elder.birthday).CompareTo(younger.birthday) > 0)
+                {
+                    if (elder.sex == "male")
+                    {
+                        elder.setToBeLittleBrotherOf(younger);
+                    }
+                    else if (elder.sex == "female")
+                    {
+                        elder.setToBeLittleSisterOf(younger);
+                    }
+                    return true;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Person::setBrotherAndSister()输入有误");
+                return false;
+            }
+            return false;
+
+        }
+        #endregion
+
+        #region//判断亲戚关系
+        public static bool isHusbandAndWife(Person husband, Person wife)
+        {
+            if (husband.sex == "male" && wife.sex == "female")
+            {
+                if(husband._wife==wife)
+                return true;
+            }
+            else if (husband.sex == "female" && wife.sex == "male")
+            {
+                if(husband._husband==wife)
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Person::isHusbandAndWife()输入有误");
+                return false;
+            }
+            return false;
+        }
+        public static bool isParentAndKid(Person parent, Person kid)
+        {
+            if (parent.age >= kid.age)
+            {
+                if (parent._son == kid || parent._daughter == kid)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (parent.age < kid.age)
+            {
+                if (parent._father == kid || parent._mother == kid)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (parent.birthday != null && kid.birthday != null)
+            {
+                if ((parent.birthday).CompareTo(kid.birthday) <= 0)
+                {
+                    if (parent._son == kid || parent._daughter == kid)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else if ((parent.birthday).CompareTo(kid.birthday) > 0)
+                {
+                    if (parent._father == kid || parent._mother == kid)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Person::isParentAndKid()输入有误");
+                return false;
+            }
+            return false;
+        }
+        public static bool isBrotherAndSister(Person elder, Person younger)
+        {
+            if (elder.age >= younger.age)
+            {
+                if (elder._littleBrother == younger || elder._littleSister == younger)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (elder.age < younger.age)
+            {
+                if (elder._elderBrother == younger || elder._elderSister == younger)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (elder.birthday != null && younger.birthday != null)
+            {
+                if ((elder.birthday).CompareTo(younger.birthday) <= 0)
+                {
+                    if (elder._littleBrother == younger || elder._littleSister == younger)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else if ((elder.birthday).CompareTo(younger.birthday) > 0)
+                {
+                    if (elder._elderBrother == younger || elder._elderSister == younger)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Person::isBrotherAndSister()输入有误");
+                return false;
+            }
+            return false;
+        }
+        #endregion
+        #region//解除亲戚关系
+        //
+        public static bool isHusbandAndWife(Person husband, Person wife)
+        {
+            if (husband.sex == "male" && wife.sex == "female")
+            {
+                husband.setToBeHusbandOf(wife);
+                return true;
+            }
+            else if (husband.sex == "female" && wife.sex == "male")
+            {
+                husband.setToBeWifeOf(wife);
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Person::setHusbandAndWife()输入有误");
+                return false;
+            }
+        }
+        public static bool isParentAndKid(Person parent, Person kid)
+        {
+            if (parent.sex == "male")
+            {
+                parent.setToBeFatherOf(kid);
+                return true;
+            }
+            else if (parent.sex == "female")
+            {
+                parent.setToBeMotherOf(kid);
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Person::setParentAndKid()输入有误");
+                return false;
+            }
+        }
+        public static bool isBrotherAndSister(Person elder, Person younger)
+        {
+            if (elder.age >= younger.age)
+            {
+                if (elder.sex == "male")
+                {
+                    elder.setToBeElderBrotherOf(younger);
+                }
+                else if (elder.sex == "female")
+                {
+                    elder.setToBeElderSisterOf(younger);
+                }
+                return true;
+            }
+            else if (elder.age < younger.age)
+            {
+                if (elder.sex == "male")
+                {
+                    elder.setToBeLittleBrotherOf(younger);
+                }
+                else if (elder.sex == "female")
+                {
+                    elder.setToBeLittleSisterOf(younger);
+                }
+                return true;
+            }
             else if ((elder.birthday).CompareTo(younger.birthday) <= 0)
             {
                 if (elder.sex == "male")
@@ -1935,9 +2196,7 @@ namespace 亲戚关系计算机_控制台_
     {
         static void Main(string[] args)
         {
-            string a = "";
-            string b;
-            Console.WriteLine(a == b);
+            
 
         }
     }

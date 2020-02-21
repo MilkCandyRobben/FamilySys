@@ -1214,6 +1214,8 @@ namespace 亲戚关系计算机_控制台_
             else if (howToFind == HowToFind.ByENCODE)
             {
                 string encodeStr = input;
+
+
                 //
             }
             return true;

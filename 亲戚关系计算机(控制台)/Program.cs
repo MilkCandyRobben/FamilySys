@@ -6,14 +6,7 @@ using System.Threading.Tasks;
 
 namespace 亲戚关系计算机_控制台_
 {
-    //static class PersonPointer
-    //{
-    //    static Person me_startPoi;
-    //    static Person prePerson;
-    //    static Person thisPerson;
-    //    static Person nextPerson;
-    //}
-    class FamilyRelationGraph
+    class FamilyGraph
     {
         Person me_startPoi;
         Person curr;
@@ -22,13 +15,12 @@ namespace 亲戚关系计算机_控制台_
         public enum HowToDel { ByNAME, ByENCODE };
         public enum HowToAlt { ByNAME, ByENCODE };
 
-        private FamilyRelationGraph()
+        public FamilyGraph()
         {
             me_startPoi = null;
             curr = null;
             memberCount = 0;
         }
-
         Person first(Person startPoi)
         {
             Person p = null;
@@ -328,7 +320,7 @@ namespace 亲戚关系计算机_控制台_
                 nextPoi = null;
             }
             return nextPoi;
-        }
+        }//目前亲戚编码只支持两层
 
         #region//深度遍历和广度遍历
         void DFS_withSetVisited(Person startPoi,List<Person> result)
@@ -380,14 +372,12 @@ namespace 亲戚关系计算机_控制台_
             BFS_withSetVisited(startPoi, result);
             cleanMark(startPoi);
         }
-
         #endregion
-
         #region//设置访问标记
         void cleanMark(Person startPoi)//待改进，算法还会有重复访问
         {
             Person p = startPoi;
-            if (p._me != null && p._me.isVisited == true) 
+            if (p._me != null) 
             {
                 p.isVisited = false;
             }
@@ -445,8 +435,8 @@ namespace 亲戚关系计算机_控制台_
         #region//编码解码以及根据编码移动指针
         void decode(string encodeStr,string decodeResult,string finalResult)
         {
-            String decode = "";
-            String result = "";
+            String decode = "";//迭代关系
+            String result = "";//最终称呼
             for (string unit_0 = encodeStr.Substring(0, 2); encodeStr.Length > 0;)
             {
                 encodeStr = encodeStr.Substring(2, encodeStr.Length - 2);
@@ -454,6 +444,7 @@ namespace 亲戚关系计算机_控制台_
                 {
                     case "00"://我
                         {
+                            decode = result = "我";
                             break;
                         }
                     case "01"://父亲
@@ -1368,13 +1359,22 @@ namespace 亲戚关系计算机_控制台_
             }
             return p;
         }//输入模块
-        public bool addPerson(bool isDead, string encodeStr)
+        public bool initMe()
+        {
+            me_startPoi = addPerson(false, "00");
+            return true;
+        }
+        public Person addPerson(bool isDead, string encodeStr)
         {
             Person p = creatPerson(isDead);
             curr = setCurrToEncodeStrPosGoingToAdd(encodeStr);
             string unit = encodeStr.Substring(0, 2);
             switch (unit)
             {
+                case "00":
+                    {
+                        break;
+                    }
                 case "01":
                 case "02":
                     {
@@ -1403,7 +1403,7 @@ namespace 亲戚关系计算机_控制台_
                     }
             }
             memberCount++;
-            return true;
+            return p;
         }
         //查找
         public bool findPerson(HowToFind howToFind, string input, List<Person> findedPersons)
@@ -1420,6 +1420,7 @@ namespace 亲戚关系计算机_控制台_
                         findedPersons.Add(i);
                     }
                 }
+                return true;
             }
             else if (howToFind == HowToFind.ByENCODE)
             {
@@ -1433,8 +1434,9 @@ namespace 亲戚关系计算机_控制台_
                         findedPersons.Add(i);
                     }
                 }
+                return true;
             }
-            return true;
+            return false;
         }
         private void showOnePersonMessage(Person p)
         {
@@ -1481,15 +1483,9 @@ namespace 亲戚关系计算机_控制台_
             }
         }
         //删除
-        private bool delPerson()
+        public bool delPerson(HowToDel howToDel,string input)
         {
-
-            return true;
-
-        }
-        public bool delPerson(HowToFind howTodel,string input)
-        {
-            if (howTodel == HowToFind.ByNAME)
+            if (howToDel == HowToDel.ByNAME)
             {
                 List<Person> findedPersons = new List<Person>();
                 findPerson(HowToFind.ByNAME, input, findedPersons);
@@ -1497,20 +1493,71 @@ namespace 亲戚关系计算机_控制台_
                 {
                     Person p = setCurrToEncodeStrPosGoingToAdd(i.encodeStr);
                     Person q = setCurrToEncodeStrPos(i.encodeStr);
-                    //
+                    if (p == q&&q==me_startPoi)
+                    {
+                        me_startPoi = null;
+                    }
+                    else
+                    {
+                        if (Person.isHusbandAndWife(p, q))
+                        {
+                            Person.unsetHusbandAndWife(p, q);
+                        }
+                        if (Person.isParentAndKid(p, q))
+                        {
+                            Person.unsetParentAndKid(p, q);
+                        }
+                        if (Person.isBrotherAndSister(p, q))
+                        {
+                            Person.unsetBrotherAndSister(p,q);
+                        }
+                    }
                 }
+                if (memberCount > 0)
+                {
+                    memberCount--;
+
+                }
+                return true;
             }
-            else if (howTodel == HowToFind.ByNAME)
+            else if (howToDel == HowToDel.ByENCODE)
             {
+                List<Person> findedPersons = new List<Person>();
+                findPerson(HowToFind.ByNAME, input, findedPersons);
+                foreach (var i in findedPersons)
+                {
+                    Person p = setCurrToEncodeStrPosGoingToAdd(i.encodeStr);
+                    Person q = setCurrToEncodeStrPos(i.encodeStr);
+                    if (p == q && q == me_startPoi)
+                    {
+                        me_startPoi = null;
+                    }
+                    else
+                    {
+                        if (Person.isHusbandAndWife(p, q))
+                        {
+                            Person.unsetHusbandAndWife(p, q);
+                        }
+                        if (Person.isParentAndKid(p, q))
+                        {
+                            Person.unsetParentAndKid(p, q);
+                        }
+                        if (Person.isBrotherAndSister(p, q))
+                        {
+                            Person.unsetBrotherAndSister(p, q);
+                        }
+                    }
+                }
+                if (memberCount > 0)
+                {
+                    memberCount--;
 
+                }
+                return true;
             }
-            if (memberCount > 0)
-            {
-                memberCount--;
 
-            }
 
-            return true;
+            return false ;
         }
 
         //修改

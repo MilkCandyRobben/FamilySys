@@ -12,10 +12,10 @@ namespace 亲戚关系计算机_控制台_
         public string name { get; set; }
         public string gender { get; set; }
         public int age { get; set; }
+        public bool isDead { get; set; }
         /*
         public string birthday { get; set; }
         public string deathday { get; set; }
-        public bool isDead { get; set; }
         public string bornPlace { get; set; }//出生地
         public string eduBackground { get; set; }//教育背景
         public string profession { get; set; }
@@ -170,12 +170,13 @@ namespace 亲戚关系计算机_控制台_
             _littleBrother = null;
             _littleSister = null;
         }
-        public Person(string name, int age, string gender, string encodeStr)
+        public Person(string name, int age, string gender, bool isDead,string encodeStr)
             : this()
         {
             this.name = name;
             this.gender = gender;
             this.age = age;
+            this.isDead = isDead;
             this.encodeStr = encodeStr;
 
             this.isVisited = false;
